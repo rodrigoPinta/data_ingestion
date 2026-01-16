@@ -1,1 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit-Ready Data Ingestion & Validation System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #ffffff;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        code {
+            background-color: #f3f4f6;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+            font-size: 0.9em;
+            color: #dc2626;
+        }
+
+        pre {
+            background-color: #1f2937;
+            color: #f9fafb;
+            padding: 1.25rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2563eb;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .intro {
+            font-size: 1.1rem;
+            color: #4b5563;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: #f9fafb;
+            border-left: 4px solid #2563eb;
+            border-radius: 4px;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .highlight-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .license {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Audit-Ready Data Ingestion & Validation System</h1>
+        
+        <p class="intro">
+            A standalone, deterministic infrastructure layer for ingesting, validating, and normalizing accounting and financial data. This system serves as a trust and governance foundation for downstream accounting, audit, and financial analysis workflows.
+        </p>
+
+        <div class="section">
+            <h2>Overview</h2>
+            <p>
+                The Data Ingestion & Validation System addresses a fundamental challenge in accounting and financial systems: <strong>garbage in, garbage out</strong>. Inaccurate, inconsistent, or improperly formatted source data undermines the integrity of financial analysis, reconciliation, and audit processes.
+            </p>
+            <p>
+                This system provides a dedicated validation and normalization layer that ensures data quality and consistency before data enters downstream accounting workflows. It operates on the principle that data validation and normalization must be deterministic, traceable, and audit-ready—never making assumptions or corrections that could alter accounting values or mask data quality issues.
+            </p>
+
+            <h3>The Problem It Solves</h3>
+            <ul>
+                <li><strong>Inconsistent data formats</strong>: Source data arrives in various formats (CSV, XLSX, JSON) with inconsistent schemas, naming conventions, and data types</li>
+                <li><strong>Data quality issues</strong>: Missing values, type mismatches, and format inconsistencies that break downstream processing</li>
+                <li><strong>Lack of auditability</strong>: No clear record of what data was received, how it was validated, or what issues were detected</li>
+                <li><strong>Downstream failures</strong>: Accounting systems fail or produce incorrect results due to unexpected data structures or invalid values</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Design Principles</h2>
+
+            <h3>Deterministic First</h3>
+            <p>
+                All validation and normalization operations are deterministic and reproducible. Given the same input, the system produces the same output. No probabilistic or non-deterministic operations affect core data processing.
+            </p>
+
+            <h3>No Automatic Data Correction</h3>
+            <div class="warning-box">
+                <p>
+                    The system <strong>never</strong> modifies accounting values, infers missing numbers, or makes assumptions about what data "should be." It flags issues for human review and professional judgment.
+                </p>
+            </div>
+
+            <h3>Audit-Ready by Design</h3>
+            <p>Every operation is traceable. The system maintains clear records of:</p>
+            <ul>
+                <li>What data was received</li>
+                <li>What validation rules were applied</li>
+                <li>What errors and warnings were detected</li>
+                <li>What normalization transformations occurred</li>
+            </ul>
+
+            <h3>Governance and Traceability</h3>
+            <p>
+                All processing steps are logged and documented. The system provides clear audit trails suitable for compliance and review processes.
+            </p>
+
+            <h3>AI as Optional Enhancement</h3>
+            <p>
+                If AI or machine learning capabilities are present, they are used only for non-critical inference tasks (e.g., categorization suggestions, anomaly detection flags). They never alter core accounting data or replace validation logic.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>What the System Does</h2>
+
+            <h3>Data Ingestion</h3>
+            <ul>
+                <li>Accepts data from multiple formats: CSV, XLSX, JSON</li>
+                <li>Handles various encoding and delimiter configurations</li>
+                <li>Supports batch and streaming ingestion patterns</li>
+            </ul>
+
+            <h3>Schema Validation</h3>
+            <ul>
+                <li>Validates data structure against defined schemas</li>
+                <li>Checks for required fields and expected data types</li>
+                <li>Identifies unexpected columns or missing expected columns</li>
+            </ul>
+
+            <h3>Data Type Normalization</h3>
+            <ul>
+                <li>Converts data types to standardized formats (dates, numbers, strings)</li>
+                <li>Handles locale-specific formats (date formats, decimal separators)</li>
+                <li>Normalizes string representations (trimming, case normalization)</li>
+            </ul>
+
+            <h3>Accounting-Aware Consistency Checks</h3>
+            <ul>
+                <li>Validates accounting-specific constraints (e.g., debit/credit balance checks)</li>
+                <li>Ensures date ranges are valid and consistent</li>
+                <li>Verifies numeric precision and scale requirements</li>
+                <li>Checks for duplicate transaction identifiers</li>
+            </ul>
+
+            <h3>Error and Warning Flagging</h3>
+            <ul>
+                <li><strong>Errors</strong>: Critical issues that prevent data from being used (e.g., missing required fields, invalid data types, schema violations)</li>
+                <li><strong>Warnings</strong>: Non-critical issues that may indicate data quality problems but don't prevent processing (e.g., unexpected values, missing optional fields, format inconsistencies)</li>
+            </ul>
+
+            <h3>Dataset Preparation</h3>
+            <ul>
+                <li>Produces standardized, validated datasets ready for downstream workflows</li>
+                <li>Maintains metadata about validation status and detected issues</li>
+                <li>Preserves original data alongside normalized versions for audit purposes</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>What the System Explicitly Does NOT Do</h2>
+
+            <h3>Does Not Change Accounting Values</h3>
+            <p>
+                The system never modifies, corrects, or infers accounting amounts, balances, or financial figures. All accounting values pass through unchanged.
+            </p>
+
+            <h3>Does Not Infer Missing Numbers</h3>
+            <p>
+                Missing or incomplete accounting data is flagged, not filled in. The system does not attempt to "guess" what missing values should be.
+            </p>
+
+            <h3>Does Not Replace Professional Judgment</h3>
+            <p>
+                Validation flags and warnings require human review. The system does not make accounting decisions or interpretations.
+            </p>
+
+            <h3>Does Not Perform Accounting Analysis</h3>
+            <p>
+                The system does not perform reconciliation, variance analysis, or other accounting operations. It prepares data for such operations but does not execute them.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Typical Workflow</h2>
+            <pre><code>Input Data (CSV/XLSX/JSON)
+    ↓
+[Ingestion]
+    ↓
+[Schema Validation]
+    ↓
+[Data Type Normalization]
+    ↓
+[Accounting-Aware Consistency Checks]
+    ↓
+[Error & Warning Detection]
+    ↓
+Output: Standardized Dataset + Validation Report
+    ↓
+Downstream Systems (Reconciliation, Analysis, Reporting)</code></pre>
+
+            <h3>Downstream Dependencies</h3>
+            <p>Downstream systems depend on this layer for:</p>
+            <ul>
+                <li><strong>Consistent data structure</strong>: All data follows the same schema and format</li>
+                <li><strong>Data quality assurance</strong>: Only validated data enters accounting workflows</li>
+                <li><strong>Error visibility</strong>: Clear reporting of data quality issues before processing</li>
+                <li><strong>Audit compliance</strong>: Complete traceability of data transformations</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Output Contract</h2>
+            <p>The system produces a standardized output structure:</p>
+
+            <h3>Status</h3>
+            <ul>
+                <li><code>valid</code>: All validation checks passed</li>
+                <li><code>errors</code>: Critical errors detected that prevent downstream use</li>
+                <li><code>warnings</code>: Non-critical issues detected but data is processable</li>
+            </ul>
+
+            <h3>Errors</h3>
+            <p>Array of critical issues that must be resolved before data can be used:</p>
+            <ul>
+                <li>Schema violations</li>
+                <li>Missing required fields</li>
+                <li>Invalid data types that cannot be normalized</li>
+                <li>Accounting constraint violations</li>
+            </ul>
+
+            <h3>Warnings</h3>
+            <p>Array of non-critical issues that may require attention:</p>
+            <ul>
+                <li>Unexpected values in optional fields</li>
+                <li>Format inconsistencies that were normalized</li>
+                <li>Missing optional fields</li>
+                <li>Potential data quality concerns</li>
+            </ul>
+
+            <h3>Normalized Data</h3>
+            <p>The processed dataset in standardized format:</p>
+            <ul>
+                <li>Consistent data types</li>
+                <li>Normalized formats (dates, numbers, strings)</li>
+                <li>Schema-compliant structure</li>
+                <li>Original data preserved for audit trail</li>
+            </ul>
+
+            <h3>Metadata</h3>
+            <ul>
+                <li>Ingestion timestamp</li>
+                <li>Validation rules applied</li>
+                <li>Transformation log</li>
+                <li>Source file information</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Use Cases</h2>
+
+            <h3>Accounting Reconciliation Pipelines</h3>
+            <p>
+                Ingest bank statements, general ledger exports, and transaction files. Validate and normalize data before reconciliation processes identify discrepancies.
+            </p>
+
+            <h3>Expense Analysis Systems</h3>
+            <p>
+                Process expense reports, vendor invoices, and procurement data. Ensure consistent categorization and validation before expense analysis and reporting.
+            </p>
+
+            <h3>Audit Data Preparation</h3>
+            <p>
+                Prepare source data for audit workflows. Provide validated, traceable datasets with clear documentation of data quality issues for auditor review.
+            </p>
+
+            <h3>Financial Reporting Pipelines</h3>
+            <p>
+                Ingest data from multiple sources (ERP systems, spreadsheets, databases) and produce standardized inputs for financial reporting and consolidation.
+            </p>
+
+            <h3>Educational and Research Systems</h3>
+            <p>
+                Provide a reference implementation of audit-ready data processing for academic research, training, and development of accounting-aware systems.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Philosophy Statement</h2>
+
+            <h3>Normalize ≠ Correct</h3>
+            <div class="highlight-box">
+                <p>
+                    This system operates on a fundamental principle: <strong>normalization is not correction</strong>.
+                </p>
+                <ul>
+                    <li><strong>Normalization</strong> transforms data formats and structures to be consistent and processable (e.g., converting "2024-01-15" and "15/01/2024" to a standard date format)</li>
+                    <li><strong>Correction</strong> changes the meaning or value of data (e.g., inferring a missing transaction amount or "fixing" what appears to be an error)</li>
+                </ul>
+                <p>
+                    The system normalizes formats and structures. It never corrects values or makes accounting judgments. This distinction is critical for audit readiness and trust in downstream systems.
+                </p>
+            </div>
+
+            <h3>Trust and Governance Layer</h3>
+            <p>
+                This system positions itself as a <strong>trust and governance layer</strong> between raw source data and downstream accounting systems. It provides:
+            </p>
+            <ul>
+                <li><strong>Transparency</strong>: Clear visibility into what data was received and how it was processed</li>
+                <li><strong>Accountability</strong>: Complete audit trails of all transformations and validations</li>
+                <li><strong>Reliability</strong>: Deterministic, reproducible processing that can be verified and reviewed</li>
+                <li><strong>Safety</strong>: Protection against downstream failures due to unexpected data structures or invalid values</li>
+            </ul>
+            <p>
+                By serving as this trust layer, the system enables downstream systems to operate with confidence that their inputs are validated, normalized, and documented.
+            </p>
+        </div>
+
+        <div class="license">
+            <p><strong>License</strong></p>
+            <p>Licensed under the Apache License, Version 2.0. See LICENSE file for details.</p>
+        </div>
+    </div>
+</body>
+</html>
